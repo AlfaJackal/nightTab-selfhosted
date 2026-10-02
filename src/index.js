@@ -1,27 +1,39 @@
 import { component } from './component';
 
+import { sync } from './component/sync';
+
 import { APP_NAME } from './constant';
 
 console.log(APP_NAME + ' version:', component.version.number, component.version.name);
 
-component.data.init();
+// the profile lives on the server, fetch it before anything reads localStorage
+sync.pull().finally(() => {
 
-component.theme.init();
+  component.data.init();
 
-component.layout.init();
+  component.theme.init();
 
-component.toolbar.init();
+  component.layout.init();
 
-component.header.init();
+  component.toolbar.init();
 
-component.group.init();
+  component.header.init();
 
-component.bookmark.init();
+  component.group.init();
 
-component.groupAndBookmark.init();
+  component.bookmark.init();
 
-component.pageLock.init();
+  component.groupAndBookmark.init();
 
-component.keyboard.init();
+  component.pageLock.init();
 
-// component.menu.open();
+  component.keyboard.init();
+
+  // after "clear all data" the defaults the app just started with become the profile
+  if (sync.cleared) { component.data.save(); }
+
+  sync.watch();
+
+  // component.menu.open();
+
+});

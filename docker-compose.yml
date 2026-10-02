@@ -1,0 +1,12 @@
+services:
+  nighttab:
+    container_name: nighttab
+    build: .
+    image: nighttab-server:local
+    restart: unless-stopped
+    # must be able to write ./data, defaults to the first regular user
+    user: "${PUID:-1000}:${PGID:-1000}"
+    ports:
+      - "${NIGHTTAB_PORT:-8585}:8080"
+    volumes:
+      - ./data:/data

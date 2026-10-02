@@ -5,6 +5,7 @@ import { bookmark } from '../bookmark';
 import { menu } from '../menu';
 import { version } from '../version';
 import { update } from '../update';
+import { sync } from '../sync';
 import { APP_NAME } from '../../constant';
 
 import { Modal } from '../modal';
@@ -20,6 +21,8 @@ const data = {};
 
 data.set = (key, data) => {
   window.localStorage.setItem(key, data);
+
+  if (key === APP_NAME) { sync.push(data); }
 };
 
 data.get = (key) => {
@@ -238,6 +241,8 @@ data.export = () => {
 
 data.remove = (key) => {
   window.localStorage.removeItem(key);
+
+  if (key === APP_NAME) { sync.remove(); }
 };
 
 data.backup = (dataToBackup) => {
@@ -335,7 +340,8 @@ data.wipe = {
 
 data.reload = {
   render: () => {
-    window.location.reload();
+    // the reload reads the profile from the server, so it has to be there first
+    sync.flush().finally(() => { window.location.reload(); });
   }
 };
 

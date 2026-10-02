@@ -1,0 +1,3 @@
+# the profile and its backups live here, they do not belong in git
+*
+!.gitignore
