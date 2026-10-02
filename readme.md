@@ -6,7 +6,7 @@ nightTab keeps its settings and bookmarks in the browser's `localStorage`. Every
 
 This fork adds a small server and a Docker image. The page looks and works exactly like nightTab, but your layout, groups, bookmarks and themes are stored on the server. Open the page on any device and you see the same start page; change it anywhere and it changes everywhere.
 
-[![nightTab](asset/screenshot/screenshot-001.png)](https://github.com/zombieFox/nightTab)
+[![nightTab with a custom layout and theme](asset/screenshot/screenshot-011.png)](#example-setups)
 
 All credit for nightTab itself goes to [zombieFox](https://github.com/zombieFox). This fork changes where the data is stored and nothing else.
 
@@ -16,6 +16,7 @@ All credit for nightTab itself goes to [zombieFox](https://github.com/zombieFox)
 - [What it is not](#what-it-is-not)
 - [Install](#install)
 - [First steps](#first-steps)
+- [Example setups](#example-setups)
 - [Configuration](#configuration)
 - [Your data and backups](#your-data-and-backups)
 - [Reverse proxy and access control](#reverse-proxy-and-access-control)
@@ -109,6 +110,22 @@ The nightTab browser extension itself is not part of this fork. It runs inside t
 ### Add more devices
 
 Just open the same address. There is nothing to set up per device.
+
+## Example setups
+
+nightTab can look very different from its defaults. These setups come from zombieFox and ship with this repository; click a picture to get its file.
+
+| | |
+|---|---|
+| [![Example setup 3](asset/screenshot/screenshot-003.png)](asset/screenshot/screenshot-003.json) | [![Example setup 4](asset/screenshot/screenshot-004.png)](asset/screenshot/screenshot-004.json) |
+| [![Example setup 5](asset/screenshot/screenshot-005.png)](asset/screenshot/screenshot-005.json) | [![Example setup 6](asset/screenshot/screenshot-006.png)](asset/screenshot/screenshot-006.json) |
+| [![Example setup 7](asset/screenshot/screenshot-007.png)](asset/screenshot/screenshot-007.json) | [![Example setup 8](asset/screenshot/screenshot-008.png)](asset/screenshot/screenshot-008.json) |
+| [![Example setup 9](asset/screenshot/screenshot-009.png)](asset/screenshot/screenshot-009.json) | [![Example setup 10](asset/screenshot/screenshot-010.png)](asset/screenshot/screenshot-010.json) |
+| [![Example setup 11](asset/screenshot/screenshot-011.png)](asset/screenshot/screenshot-011.json) | |
+
+**Try one:** download the `.json` file from [asset/screenshot](asset/screenshot), then open the menu → **Data** → **Restore** and import it. The import dialog offers three boxes – *Settings*, *Theme* and *Bookmarks*. Untick *Bookmarks* to get only the look and keep your own.
+
+Because the profile is shared, the new look appears on all your devices. The version you had before is in the [backups](#your-data-and-backups).
 
 ## Configuration
 
