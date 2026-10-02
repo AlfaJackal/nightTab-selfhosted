@@ -24,15 +24,36 @@ All credit for nightTab itself goes to [zombieFox](https://github.com/zombieFox)
 
 ## Quick start
 
+With the prebuilt image (amd64 and arm64), save this as `docker-compose.yml` and run `docker compose up -d`:
+
+```yaml
+services:
+  nighttab:
+    image: ghcr.io/alfajackal/nighttab-selfhosted:latest
+    container_name: nighttab
+    restart: unless-stopped
+    ports:
+      - "8585:8080"
+    volumes:
+      - nighttab-data:/data
+
+volumes:
+  nighttab-data:
+```
+
+Open `http://<your-host>:8585`. The first device that opens the page creates the profile.
+
+To update, run `docker compose pull` followed by `docker compose up -d`.
+
+### Building it yourself
+
 ```bash
 git clone https://github.com/AlfaJackal/nightTab-selfhosted.git
 cd nightTab-selfhosted
 docker compose up -d --build
 ```
 
-Open `http://<your-host>:8585`. The first device that opens the page creates the profile.
-
-To update, run `git pull` followed by `docker compose up -d --build`.
+This uses the `docker-compose.yml` from the repository, which keeps the profile in the `data/` folder next to it. To update, run `git pull` followed by `docker compose up -d --build`.
 
 ### Bringing your existing nightTab setup
 
@@ -44,7 +65,7 @@ The page is a normal website, so set it as your browser's home page, or use any 
 
 ## Configuration
 
-Set these in a `.env` file next to `docker-compose.yml`:
+The `docker-compose.yml` from the repository reads these from a `.env` file next to it:
 
 | Variable | Default | Meaning |
 |---|---|---|
@@ -56,11 +77,11 @@ The container itself also reads `BACKUP_KEEP` (number of backups to keep, defaul
 ## Your data
 
 ```
-data/nighttab.json      the profile
-data/backups/           the previous versions, one for every change
+/data/nighttab.json      the profile
+/data/backups/           the previous versions, one for every change
 ```
 
-`nighttab.json` has the same format as a nightTab export, so it can be imported into any nightTab. To go back to an older version, copy a file from `backups/` over `nighttab.json` and restart the container. `data/` is all you need to back up.
+`nighttab.json` has the same format as a nightTab export, so it can be imported into any nightTab. To go back to an older version, copy a file from `backups/` over `nighttab.json` and restart the container. `/data` in the container is the `nighttab-data` volume, or the `data/` folder if you built from the repository. It is all you need to back up.
 
 ## Reverse proxy
 
