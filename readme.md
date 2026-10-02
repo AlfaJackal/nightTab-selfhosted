@@ -72,7 +72,7 @@ docker compose up -d
 
 Open `http://<your-host>:8585`. The first device that opens the page creates the profile, starting with nightTab's example bookmarks.
 
-The image is built for `amd64` and `arm64` (for example a Raspberry Pi with a 64-bit system). So far it has been run on `amd64` only.
+The image is built for `amd64` and `arm64` (for example a Raspberry Pi with a 64-bit system). Every build is started and checked on both before you get it.
 
 **Pin a version.** `latest` follows every change in this repository. For a fixed version, replace `latest` with a release such as `2026.10.0`, or with `2026.10` to get the fixes of that month only. The [releases page](https://github.com/AlfaJackal/nightTab-selfhosted/releases) lists them.
 
@@ -288,7 +288,8 @@ This is a fork of nightTab 7.6.0 and keeps its GPL-3 licence. Changed or added:
 | `src/component/groupArea/index.js` | "Open all bookmarks in this group" opens tabs with `window.open` when the page is not running as an extension, and reports blocked pop-ups |
 | `src/component/state/index.js`, `src/component/bookmark/`, `src/component/menuContent/bookmarkSetting/index.js` | global name size for all bookmarks (`state.bookmark.name.size`) |
 | `src/locale/en_GB/messages.json` | texts for the two additions |
-| `Dockerfile`, `docker-compose.yml`, `test/`, `.github/workflows/docker-publish.yml`, `.github/workflows/image-cleanup.yml` | new |
+| `Dockerfile`, `docker-compose.yml`, `test/`, `.github/workflows/`, `.github/dependabot.yml` | new |
+| `.github/ISSUE_TEMPLATE/` | rewritten for this fork |
 
 Everything else is untouched, so upstream changes merge with little friction:
 
