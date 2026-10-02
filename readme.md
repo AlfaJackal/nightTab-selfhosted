@@ -236,6 +236,8 @@ One thing matters for every proxy: the page keeps one request open permanently (
 
 **The page shows the example bookmarks instead of my setup.** The server has no profile yet, or the one it has is the default. Import your export as described in [First steps](#first-steps), or restore a backup.
 
+**"Open all bookmarks in this group" opens only one tab, or shows "Pop-ups are blocked".** A web page may only open several tabs at once when the browser allows pop-ups for it. Allow them for your address (the browser shows an icon in the address bar when it blocked something), then use *Try again*.
+
 **Is it running?** `http://<your-address>/api/health` answers `{"ok":true,…}`, and `docker ps` shows the container as `healthy`.
 
 **What is the server doing?** `docker logs nighttab` lists every saved version with its time and size.
@@ -268,7 +270,7 @@ DATA_DIR=./data node server/index.js    # http://localhost:8080
 sh test/run.sh
 ```
 
-This starts a throwaway server and a headless Chrome in their own Docker network and plays through the sync with simulated devices: first profile, change from one device to the other, open menu, server away, clear all, new device. 24 checks, and your real profile is not touched.
+This starts a throwaway server and a headless Chrome in their own Docker network and plays through the sync with simulated devices: first profile, change from one device to the other, open menu, server away, clear all, new device, open all bookmarks of a group. 29 checks, and your real profile is not touched.
 
 ## Changes to upstream
 
