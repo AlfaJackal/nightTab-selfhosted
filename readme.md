@@ -120,7 +120,7 @@ nightTab can look very different from its defaults. These setups come from zombi
 | [![Example setup 3](asset/screenshot/screenshot-003.png)](asset/screenshot/screenshot-003.json) | [![Example setup 4](asset/screenshot/screenshot-004.png)](asset/screenshot/screenshot-004.json) |
 | [![Example setup 5](asset/screenshot/screenshot-005.png)](asset/screenshot/screenshot-005.json) | [![Example setup 6](asset/screenshot/screenshot-006.png)](asset/screenshot/screenshot-006.json) |
 | [![Example setup 7](asset/screenshot/screenshot-007.png)](asset/screenshot/screenshot-007.json) | [![Example setup 8](asset/screenshot/screenshot-008.png)](asset/screenshot/screenshot-008.json) |
-| [![Example setup 9](asset/screenshot/screenshot-009.png)](asset/screenshot/screenshot-009.json) | [![Example setup 10](asset/screenshot/screenshot-010.png)](asset/screenshot/screenshot-010.json) |
+| [![Example setup 9](asset/screenshot/screenshot-009.gif)](asset/screenshot/screenshot-009.json) | [![Example setup 10](asset/screenshot/screenshot-010.png)](asset/screenshot/screenshot-010.json) |
 | [![Example setup 11](asset/screenshot/screenshot-011.png)](asset/screenshot/screenshot-011.json) | |
 
 **Try one:** download the `.json` file from [asset/screenshot](asset/screenshot), then open the menu → **Data** → **Restore** and import it. The import dialog offers three boxes – *Settings*, *Theme* and *Bookmarks*. Untick *Bookmarks* to get only the look and keep your own.
