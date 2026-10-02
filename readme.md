@@ -73,7 +73,7 @@ Open `http://<your-host>:8585`. The first device that opens the page creates the
 
 The image is built for `amd64` and `arm64` (for example a Raspberry Pi with a 64-bit system). So far it has been run on `amd64` only.
 
-**Pin a version.** `latest` follows every change in this repository. For a fixed version, replace `latest` with a release tag such as `7.6.0-selfhosted.1`; the [releases page](https://github.com/AlfaJackal/nightTab-selfhosted/releases) lists them.
+**Pin a version.** `latest` follows every change in this repository. For a fixed version, replace `latest` with a release tag such as `7.6.0-selfhosted.2`; the [releases page](https://github.com/AlfaJackal/nightTab-selfhosted/releases) lists them.
 
 **Update:**
 
