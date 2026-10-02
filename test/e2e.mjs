@@ -86,7 +86,9 @@ const device = async (name, width, height) => {
     offline: (offline) => send('Network.emulateNetworkConditions', { offline, latency: 0, downloadThroughput: -1, uploadThroughput: -1 }, sessionId),
     // a page reload throws the marker away
     mark: () => run('window.__mark = true'),
-    marked: () => run('window.__mark === true')
+    marked: () => run('window.__mark === true'),
+    // number of tabs this device has open
+    tabs: async () => (await send('Target.getTargets')).targetInfos.filter((target) => target.type === 'page' && target.browserContextId === browserContextId).length
   };
 };
 
@@ -224,6 +226,35 @@ await c.open();
 await sleep(1500);
 
 check('new device takes the existing profile', hex(await c.run('t.profile()')) === '#123456' && hex((await server()).profile) === '#123456');
+
+// "open all bookmarks in this group" has to work on a plain web page, where only window.open is available
+const openAllProfile = (await server()).profile;
+
+openAllProfile.state.bookmark.newTab = true;
+openAllProfile.bookmark.forEach((group) => { group.items.forEach((item, index) => { item.url = APP + 'api/health?' + index; }); });
+
+await fetch(APP + 'api/data', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(openAllProfile) });
+await sleep(3500);
+
+const groupSize = openAllProfile.bookmark[openAllProfile.bookmark.length - 1].items.length;
+const tabsBefore = await c.tabs();
+
+// first with a pop-up blocker: window.open hands back nothing
+await c.run('window.__open = window.open; window.open = () => null;');
+await c.run('t.button(/^open all bookmarks in this group$/i)');
+await sleep(1000);
+
+check('blocked tabs are reported instead of failing silently', (await c.run('document.querySelector(".modal .modal-heading-text")?.textContent')) === 'Pop-ups are blocked');
+check('nothing was opened', (await c.tabs()) === tabsBefore);
+
+// pop-ups allowed, "Try again" opens what was blocked
+await c.run('window.open = window.__open;');
+await c.run('t.button(/^try again$/i, ".modal")');
+await sleep(2000);
+
+check('every bookmark of the group opens in its own tab', (await c.tabs()) - tabsBefore === groupSize, { opened: (await c.tabs()) - tabsBefore, groupSize });
+check('the page stays where it is', (await c.run('location.href')) === APP);
+check('the group still has all its bookmarks', (await c.run('[...document.querySelectorAll(".group")].pop().querySelectorAll(".bookmark").length')) === groupSize);
 
 console.log(failed === 0 ? '\nall checks passed' : `\n${failed} check(s) failed`);
 

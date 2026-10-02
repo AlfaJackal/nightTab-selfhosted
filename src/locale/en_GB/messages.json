@@ -2407,6 +2407,26 @@
     "message": "Open all bookmarks in this group",
     "description": "Button for bookmark group control to open all bookmarks."
   },
+  "groupAreaOpenAllBlockedHeading": {
+    "message": "Pop-ups are blocked",
+    "description": "Heading of the notice shown when the browser blocked tabs opened by the open all bookmarks button."
+  },
+  "groupAreaOpenAllBlockedContentPara1": {
+    "message": "Your browser stopped some of the bookmarks from opening. A page may only open several tabs at once when pop-ups are allowed for it.",
+    "description": "Explanation in the pop-ups blocked notice."
+  },
+  "groupAreaOpenAllBlockedContentPara2": {
+    "message": "Allow pop-ups for this page, usually with the icon that just appeared in the address bar, then try again.",
+    "description": "Instruction in the pop-ups blocked notice."
+  },
+  "groupAreaOpenAllBlockedSuccessText": {
+    "message": "Try again",
+    "description": "Button in the pop-ups blocked notice to open the remaining bookmarks."
+  },
+  "groupAreaOpenAllBlockedCancelText": {
+    "message": "Close",
+    "description": "Button to close the pop-ups blocked notice."
+  },
   "groupAreaControlCollapse": {
     "message": "Collapse this group",
     "description": "Button for bookmark group control to collapse bookmark group."

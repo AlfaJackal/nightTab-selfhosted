@@ -185,27 +185,71 @@ export const GroupArea = function({
     }),
     open: () => {
 
-      if ('tabs' in chrome) {
+      const items = groupData.group.items.filter((item) => isValidString(item.url));
 
-        if (state.get.current().bookmark.newTab) {
+      if (items.length === 0) { return; }
 
-          groupData.group.items.forEach((item) => {
-            chrome.tabs.create({ url: item.url });
-          });
+      // without "open in new tab" the first bookmark replaces this page
+      const first = state.get.current().bookmark.newTab ? false : items[0];
 
-        } else {
+      const rest = first ? items.slice(1) : items;
 
-          const first = groupData.group.items.shift();
+      if (typeof chrome != 'undefined' && 'tabs' in chrome) {
+        // installed as extension
 
-          groupData.group.items.forEach((item) => {
-            chrome.tabs.create({ url: item.url });
-          });
+        rest.forEach((item) => {
+          chrome.tabs.create({ url: item.url });
+        });
 
-          window.location.href = first.url;
+        if (first) { window.location.href = first.url; }
 
-        }
+      } else {
+        // served as a web page
+
+        this.openAll.tabs(rest, first);
 
       }
+
+    },
+    tabs: (list, first) => {
+
+      // a page can only open tabs with window.open, the pop-up blocker may stop some of them
+      const blocked = list.filter((item) => {
+
+        const tab = window.open(item.url, '_blank');
+
+        if (tab) { tab.opener = null; }
+
+        return !tab;
+
+      });
+
+      if (blocked.length > 0) {
+
+        this.openAll.blocked(blocked, first);
+
+      } else if (first) {
+
+        window.location.href = first.url;
+
+      }
+
+    },
+    blocked: (list, first) => {
+
+      const blockedModal = new Modal({
+        heading: message.get('groupAreaOpenAllBlockedHeading'),
+        content: node('div', [
+          node(`p:${message.get('groupAreaOpenAllBlockedContentPara1')}`),
+          node(`p:${message.get('groupAreaOpenAllBlockedContentPara2')}`)
+        ]),
+        successText: message.get('groupAreaOpenAllBlockedSuccessText'),
+        cancelText: message.get('groupAreaOpenAllBlockedCancelText'),
+        width: 'small',
+        successAction: () => { this.openAll.tabs(list, first); }
+      });
+
+      blockedModal.open();
 
     }
   };
