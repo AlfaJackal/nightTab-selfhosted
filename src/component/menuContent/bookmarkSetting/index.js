@@ -35,6 +35,7 @@ bookmarkSetting.disable = () => {
 
   if (state.get.current().bookmark.show) {
     bookmarkSetting.control.general.size.enable();
+    bookmarkSetting.control.general.nameSize.enable();
     bookmarkSetting.control.general.urlShow.enable();
     bookmarkSetting.control.general.lineShow.enable();
     bookmarkSetting.control.general.shadowShow.enable();
@@ -48,6 +49,7 @@ bookmarkSetting.disable = () => {
     bookmarkSetting.control.sort.name.enable();
   } else {
     bookmarkSetting.control.general.size.disable();
+    bookmarkSetting.control.general.nameSize.disable();
     bookmarkSetting.control.general.urlShow.disable();
     bookmarkSetting.control.general.lineShow.disable();
     bookmarkSetting.control.general.shadowShow.disable();
@@ -182,6 +184,22 @@ bookmarkSetting.general = (parent) => {
     }
   });
 
+  // scales the name of every bookmark, on top of the "Name size" each bookmark has of its own
+  bookmarkSetting.control.general.nameSize = new Control_slider({
+    object: state.get.current(),
+    path: 'bookmark.name.size',
+    id: 'bookmark-name-size',
+    labelText: message.get('menuContentBookmarkGeneralNameSize'),
+    value: state.get.current().bookmark.name.size,
+    defaultValue: state.get.default().bookmark.name.size,
+    min: state.get.minMax().bookmark.name.size.min,
+    max: state.get.minMax().bookmark.name.size.max,
+    action: () => {
+      applyCSSVar('bookmark.name.size');
+      data.save();
+    }
+  });
+
   bookmarkSetting.control.general.size = new Control_slider({
     object: state.get.current(),
     path: 'bookmark.size',
@@ -210,7 +228,8 @@ bookmarkSetting.general = (parent) => {
     bookmarkSetting.control.general.shadowShow.wrap(),
     bookmarkSetting.control.general.hoverScaleShow.wrap(),
     bookmarkSetting.control.general.newTab.wrap(),
-    bookmarkSetting.control.general.size.wrap()
+    bookmarkSetting.control.general.size.wrap(),
+    bookmarkSetting.control.general.nameSize.wrap()
   ]);
 
   bookmarkSetting.control.general.collapse = new Collapse({

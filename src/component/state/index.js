@@ -60,6 +60,7 @@ state.default = {
   },
   bookmark: {
     size: 100,
+    name: { size: 100 },
     url: { show: true },
     line: { show: true },
     shadow: { show: true },
@@ -123,7 +124,7 @@ state.minMax = {
     date: { size: { min: 50, max: 500 } },
     search: { size: { min: 50, max: 500 }, width: { size: { min: 10, max: 100 } } }
   },
-  bookmark: { size: { min: 50, max: 500 } },
+  bookmark: { size: { min: 50, max: 500 }, name: { size: { min: 50, max: 500 } } },
   group: {
     name: { size: { min: 50, max: 500 } },
     toolbar: { size: { min: 50, max: 500 } }
@@ -274,6 +275,8 @@ state.set = {
       state.current.layout = dataToRestore.state.layout;
       state.current.header = dataToRestore.state.header;
       state.current.bookmark = dataToRestore.state.bookmark;
+      // profiles from upstream nightTab do not have the global name size
+      if (!state.current.bookmark.name) { state.current.bookmark.name = state.get.default().bookmark.name; }
       state.current.group = dataToRestore.state.group;
       state.current.toolbar = dataToRestore.state.toolbar;
       console.log('setup restored');

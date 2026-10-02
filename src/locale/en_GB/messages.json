@@ -1531,6 +1531,10 @@
     "message": "Open Bookmarks in a new tab",
     "description": "Checkbox for open bookmark in a new tab."
   },
+  "menuContentBookmarkGeneralNameSize": {
+    "message": "Name size of all bookmarks",
+    "description": "Label for the slider which scales the name of every bookmark."
+  },
   "menuContentBookmarkGeneralSize": {
     "message": "Bookmark size",
     "description": "Range for bookmark size."

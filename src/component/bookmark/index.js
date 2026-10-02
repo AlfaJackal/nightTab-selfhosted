@@ -551,7 +551,8 @@ bookmark.reset = () => {
 
 bookmark.init = () => {
   applyCSSVar([
-    'bookmark.size'
+    'bookmark.size',
+    'bookmark.name.size'
   ]);
   applyCSSClass([
     'bookmark.item.justify',

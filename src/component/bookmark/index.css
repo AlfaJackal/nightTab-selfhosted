@@ -597,7 +597,7 @@
 
 .bookmark-display-name {
   color: hsl(var(--bookmark-display-name-color));
-  font-size: calc(var(--bookmark-display-name-size) * 0.1em);
+  font-size: calc(var(--bookmark-display-name-size) * 0.1em * calc(var(--bookmark-name-size, 100) / 100));
   display: flex;
   justify-content: center;
   transition: color var(--layout-transition-extra-fast);

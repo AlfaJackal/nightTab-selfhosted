@@ -227,6 +227,34 @@ await sleep(1500);
 
 check('new device takes the existing profile', hex(await c.run('t.profile()')) === '#123456' && hex((await server()).profile) === '#123456');
 
+// global name size: one slider for the names of all bookmarks, synced like everything else
+const nameFont = (device) => device.run('parseFloat(getComputedStyle(document.querySelector(".bookmark-display-name")).fontSize)');
+const nameFontBefore = await nameFont(c);
+
+await c.run('t.button(/^open settings menu$/i)');
+await sleep(800);
+await c.run('t.button(/^bookmark$/i, ".menu-nav")');
+await sleep(500);
+await c.run(`(() => { document.querySelectorAll('.menu input[id^="bookmark-name-size"]').forEach((input) => { Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, '200'); input.dispatchEvent(new Event('input', { bubbles: true })); input.dispatchEvent(new Event('change', { bubbles: true })); }); })()`);
+await sleep(2500);
+
+check('the global name size scales the bookmark names', Math.abs((await nameFont(c)) - nameFontBefore * 2) < 0.1, { before: nameFontBefore, after: await nameFont(c) });
+check('it is stored in the profile', (await server()).profile.state.bookmark.name.size === 200);
+check('other devices show it too', Math.abs((await nameFont(a)) - nameFontBefore * 2) < 0.1, await nameFont(a));
+
+await c.run('t.button(/./, ".menu-close")');
+await sleep(800);
+
+// a profile exported from upstream nightTab has no global name size
+const upstreamProfile = (await server()).profile;
+
+delete upstreamProfile.state.bookmark.name;
+
+await fetch(APP + 'api/data', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(upstreamProfile) });
+await sleep(3500);
+
+check('a profile without the setting falls back to the normal size', Math.abs((await nameFont(c)) - nameFontBefore) < 0.1 && (await c.run('t.groups().length')) > 0, await nameFont(c));
+
 // "open all bookmarks in this group" has to work on a plain web page, where only window.open is available
 const openAllProfile = (await server()).profile;
 
