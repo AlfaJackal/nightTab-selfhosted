@@ -12,7 +12,7 @@ All credit for nightTab itself goes to [zombieFox](https://github.com/zombieFox)
 
 - **One shared profile** – settings, groups, bookmarks and custom themes are stored as a JSON file on the server.
 - **Live on all devices** – change something on your laptop and the open tab on your desktop updates itself a moment later.
-- **Works when the server is away** – the browser keeps a cached copy; changes made in the meantime are uploaded when the server is back.
+- **Survives a server hiccup** – an open page keeps working while the server is away; changes made in the meantime are uploaded when it is back.
 - **Backups included** – the server keeps the last 30 versions of the profile.
 - **One small container** – Node standard library only, no database, no runtime dependencies.
 
@@ -104,7 +104,7 @@ The server sends `X-Accel-Buffering: no` for the event stream, which nginx honou
 - **Start:** the page fetches the profile from the server and puts it into `localStorage` before nightTab starts. `localStorage` is only a cache now.
 - **Change:** every save is sent to the server 0.4 seconds later.
 - **Other devices:** open pages listen on an event stream and reload when the profile changed. A page with an open menu or dialog waits until it is closed.
-- **Server not reachable:** the page starts from its cache after 4 seconds and keeps the changes until the server answers again. A device that has never synced does not overwrite an existing profile with its defaults.
+- **Server not reachable:** an open page keeps working and uploads its changes when the server answers again. If the page loads but the API does not answer within 4 seconds, it starts from its cache. With the server down completely the page cannot be loaded at all – the server delivers it. A device that has never synced does not overwrite an existing profile with its defaults.
 - **Not synced:** state that belongs to one device – edit mode, the open menu, the search field and the layout breakpoint that follows the window width.
 - **"Clear all data"** in the menu resets the profile for all devices. The version before that is in the backups.
 - **Empty server** (new deployment, lost volume): the first device that opens the page uploads its cached copy, so the profile comes back by itself.
@@ -124,7 +124,7 @@ The server sends `X-Accel-Buffering: no` for the event stream, which nginx honou
 ```bash
 npm install
 npm run build              # web app into dist/web
-DATA_DIR=./data node server/index.js
+DATA_DIR=./data node server/index.js   # http://localhost:8080
 ```
 
 `npm start` still runs the webpack dev server from upstream; without the sync server behind it the page falls back to plain `localStorage`.
