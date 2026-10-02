@@ -9,6 +9,18 @@ on:
       - main
     tags:
       - 'v*'
+    # only what ends up in the image; GitHub ignores this filter for tags,
+    # so a release is always built
+    paths:
+      - 'src/**'
+      - 'server/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'webpack.common.js'
+      - 'webpack.prod.js'
+      - 'Dockerfile'
+      - '.dockerignore'
+      - '.github/workflows/docker-publish.yml'
   workflow_dispatch:
 
 permissions:
