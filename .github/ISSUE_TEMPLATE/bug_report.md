@@ -1,47 +1,62 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Something does not work as expected
 title: ''
 labels: ''
 assignees: ''
 
 ---
 
-# Have you checked the [nightTab Wiki for support?](https://github.com/zombieFox/nightTab/wiki)
+<!--
+This is nightTab self-hosted, a fork of nightTab with a sync server.
+Questions about nightTab itself (themes, layout, keyboard shortcuts) are best answered by the nightTab wiki:
+https://github.com/zombieFox/nightTab/wiki
+The readme has a troubleshooting section that covers the common cases:
+https://github.com/AlfaJackal/nightTab-selfhosted#troubleshooting
+-->
 
-**Please check before posting a question or issue.**
+**What happened**
 
-Some frequently asked questions include:
-- [Browser support](https://github.com/zombieFox/nightTab/wiki/Browser-support)
-- [Protected URLs](https://github.com/zombieFox/nightTab/wiki/Protected-URLs)
-- [Resetting when opening the browser](https://github.com/zombieFox/nightTab/wiki/Resetting-when-opening-the-browser)
-- [Setting nightTab as your Firefox homepage](https://github.com/zombieFox/nightTab/wiki/Setting-nightTab-as-your-Firefox-homepage)
+A short description of the problem.
 
----
+**Steps to reproduce**
 
-# Still need to report an issue or ask a question:
+1.
+2.
+3.
 
-**Describe the issue or bug**
-A clear and concise description of what the bug is.
+**What you expected instead**
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**Setup**
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+- Image tag or release: (e.g. `2026.10.0`, `latest`, built yourself)
+- Docker version: (`docker --version`)
+- Reverse proxy, if any: (e.g. Caddy, nginx, Traefik, none)
+- Browser and operating system:
+- Several devices involved? (yes / no)
+
+**Server state**
+
+Output of `http://<your-address>/api/health`:
+
+```
+
+```
+
+Last lines of `docker logs nighttab`:
+
+```
+
+```
+
+**Browser console**
+
+Errors from the browser's developer console (F12), especially lines starting with `sync:`:
+
+```
+
+```
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
- - nightTab version [e.g. 6.0.0]
-
-**Additional context**
-Add any other context about the problem here.
+If they help.

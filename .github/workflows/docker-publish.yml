@@ -30,6 +30,8 @@ permissions:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.name.outputs.image }}@${{ steps.build.outputs.digest }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -55,7 +57,13 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
 
+      - name: Image name
+        id: name
+        # registry names have to be lower case
+        run: echo "image=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
       - name: Build and push
+        id: build
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -65,3 +73,35 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # start the image that was just pushed on both architectures and use it once
+  smoke-test:
+    needs: build-and-push
+    strategy:
+      matrix:
+        runner:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Start
+        run: |
+          docker run -d --name nighttab -p 8080:8080 "${{ needs.build-and-push.outputs.image }}"
+          echo "architecture: $(docker exec nighttab uname -m)"
+
+      - name: Page and health
+        run: |
+          for i in $(seq 1 30); do curl -sf http://localhost:8080/api/health && break; sleep 1; done
+          echo
+          curl -sf http://localhost:8080/ | grep -q '<title>'
+
+      - name: Profile survives a restart
+        run: |
+          curl -sf -X PUT -H 'Content-Type: application/json'             --data '{"nightTab":true,"version":"7.6.0","state":{},"bookmark":[{"name":{"text":"smoke"},"items":[]}]}'             http://localhost:8080/api/data
+          docker restart nighttab
+          for i in $(seq 1 30); do curl -sf http://localhost:8080/api/health >/dev/null && break; sleep 1; done
+          curl -sf http://localhost:8080/api/data | grep -q '"smoke"'
+
+      - name: Log
+        if: always()
+        run: docker logs nighttab

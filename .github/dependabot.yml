@@ -1,0 +1,27 @@
+# Keeps the base image and the GitHub Actions up to date. Every update comes
+# as a pull request; merging one rebuilds the image.
+#
+# Forks have to switch this on once: Settings > Advanced Security >
+# Dependabot version updates > Enable.
+
+version: 2
+
+updates:
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      # a new Node major is a deliberate step, not a routine update
+      - dependency-name: node
+        update-types:
+          - version-update:semver-major
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns:
+          - '*'
