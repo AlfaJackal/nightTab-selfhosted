@@ -8,7 +8,7 @@ This fork adds a small server and a Docker image. The page looks and works exact
 
 [![nightTab with a custom layout and theme](asset/screenshot/screenshot-011.png)](#example-setups)
 
-All credit for nightTab itself goes to [zombieFox](https://github.com/zombieFox). This fork changes where the data is stored and nothing else.
+All credit for nightTab itself goes to [zombieFox](https://github.com/zombieFox). This fork changes where the data is stored and adds the few things listed under [Changes to upstream](#changes-to-upstream).
 
 ## Contents
 
@@ -35,6 +35,7 @@ All credit for nightTab itself goes to [zombieFox](https://github.com/zombieFox)
 - **Survives a server hiccup.** An open page keeps working while the server is away; changes made in the meantime are uploaded when it is back.
 - **Backups included.** The server keeps the last 30 versions of the profile.
 - **One small container.** It serves the page and stores the data. No database, no runtime dependencies beyond Node.
+- **Two extras for daily use.** "Open all bookmarks in this group" works on a self-hosted page, and Menu → Bookmark has a *Name size of all bookmarks* slider. nightTab itself only has a name size per bookmark.
 
 ## What it is not
 
@@ -270,7 +271,7 @@ DATA_DIR=./data node server/index.js    # http://localhost:8080
 sh test/run.sh
 ```
 
-This starts a throwaway server and a headless Chrome in their own Docker network and plays through the sync with simulated devices: first profile, change from one device to the other, open menu, server away, clear all, new device, open all bookmarks of a group. 29 checks, and your real profile is not touched.
+This starts a throwaway server and a headless Chrome in their own Docker network and plays through the sync with simulated devices: first profile, change from one device to the other, open menu, server away, clear all, new device, global name size, open all bookmarks of a group. 33 checks, and your real profile is not touched.
 
 ## Changes to upstream
 
@@ -282,9 +283,12 @@ This is a fork of nightTab 7.6.0 and keeps its GPL-3 licence. Changed or added:
 | `src/component/sync/index.js` | new – fetch before start, upload on save, reload on a change from elsewhere |
 | `src/component/data/index.js` | `data.set`, `data.remove` and `data.reload.render` call the sync |
 | `src/index.js` | waits for the profile before starting the page |
+| `src/component/groupArea/index.js` | "Open all bookmarks in this group" opens tabs with `window.open` when the page is not running as an extension, and reports blocked pop-ups |
+| `src/component/state/index.js`, `src/component/bookmark/`, `src/component/menuContent/bookmarkSetting/index.js` | global name size for all bookmarks (`state.bookmark.name.size`) |
+| `src/locale/en_GB/messages.json` | texts for the two additions |
 | `Dockerfile`, `docker-compose.yml`, `test/`, `.github/workflows/docker-publish.yml` | new |
 
-Everything else is untouched, so upstream changes merge cleanly:
+Everything else is untouched, so upstream changes merge with little friction:
 
 ```bash
 git remote add upstream https://github.com/zombieFox/nightTab.git
