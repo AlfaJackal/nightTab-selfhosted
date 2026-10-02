@@ -1,0 +1,40 @@
+name: image-cleanup
+
+# every build of "latest" leaves the previous image behind without a tag;
+# this removes those leftovers from ghcr.io and keeps every tagged image intact,
+# including the platform images (amd64, arm64) and attestations it is made of
+
+on:
+  workflow_run:
+    workflows:
+      - docker-publish
+    types:
+      - completed
+  schedule:
+    - cron: '30 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'Only list what would be deleted'
+        type: boolean
+        default: true
+
+permissions:
+  packages: write
+
+concurrency:
+  group: image-cleanup
+
+jobs:
+  cleanup:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dataaxiom/ghcr-cleanup-action@v1
+        with:
+          package: nighttab-selfhosted
+          delete-untagged: true
+          # leave images of a build that is still being pushed alone
+          older-than: 1 hour
+          validate: true
+          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry-run }}

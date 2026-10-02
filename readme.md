@@ -288,7 +288,7 @@ This is a fork of nightTab 7.6.0 and keeps its GPL-3 licence. Changed or added:
 | `src/component/groupArea/index.js` | "Open all bookmarks in this group" opens tabs with `window.open` when the page is not running as an extension, and reports blocked pop-ups |
 | `src/component/state/index.js`, `src/component/bookmark/`, `src/component/menuContent/bookmarkSetting/index.js` | global name size for all bookmarks (`state.bookmark.name.size`) |
 | `src/locale/en_GB/messages.json` | texts for the two additions |
-| `Dockerfile`, `docker-compose.yml`, `test/`, `.github/workflows/docker-publish.yml` | new |
+| `Dockerfile`, `docker-compose.yml`, `test/`, `.github/workflows/docker-publish.yml`, `.github/workflows/image-cleanup.yml` | new |
 
 Everything else is untouched, so upstream changes merge with little friction:
 
